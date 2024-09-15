@@ -5,7 +5,7 @@ export function useSocket() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://10.10.93.210:3000");
+    const socket = io("https://stranger-backend-hhwz.onrender.com/");
     socket.on("connect", () => {
       console.log("user connected");
       setSocket(socket);
