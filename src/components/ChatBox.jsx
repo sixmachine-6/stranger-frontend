@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tagline from "../ui/Tagline";
 import Chats from "./Chats";
+import VideoRoom from "./VideoRoom";
 
 function ChatBox({ socket, setChats, chats }) {
   const [message, setMessage] = useState("");
@@ -18,10 +19,13 @@ function ChatBox({ socket, setChats, chats }) {
   return (
     <div>
       <Tagline />
+      <div className="">
+        <VideoRoom socket={socket} />
 
-      <Chats chats={chats} socket={socket} />
+        <Chats chats={chats} socket={socket} />
+      </div>
 
-      <div className="fixed bottom-0 right-0 left-0 flex justify-center items-center mx-3">
+      <div className="absolute bottom-0 right-0 left-0 flex justify-center items-center mx-3">
         <input
           className="bg-slate-200 p-2 m-2 w-full rounded-xl focus:outline-slate-400"
           placeholder="Enter text"

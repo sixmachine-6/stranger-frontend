@@ -9,32 +9,39 @@ function Home() {
   const [status, setStatus] = useState("welcome");
   const [message, setMessage] = useState(null);
   const [chats, setChats] = useState([]);
+
   const socket = useSocket();
+
+  // useEffect(function () {
+  //   async function accessVideoAndAudio() {}
+  // }, []);
+
   useEffect(
     function () {
-      if (!socket) return;
+      async function webRTCAndSocket() {
+        if (!socket) return;
 
-      socket.on("pairing", (data) => {
-        console.log(data);
-        setMessage(data);
-      });
+        socket.on("pairing", (data) => {
+          setMessage(data);
+        });
 
-      socket.on("paired", (data) => {
-        console.log(data);
-        toast.success(data);
-        setStatus("found");
-      });
+        socket.on("paired", (data) => {
+          toast.success(data);
+          setStatus("found");
+        });
 
-      socket.on("recieveMessage", (data) => {
-        console.log(data);
-        setChats((chats) => [...chats, data]);
-      });
+        socket.on("recieveMessage", (data) => {
+          console.log(data);
+          setChats((chats) => [...chats, data]);
+        });
 
-      socket.on("disconnected", (data) => {
-        console.log(data);
-        setMessage(data);
-        setStatus("pairing");
-      });
+        socket.on("disconnected", (data) => {
+          console.log(data);
+          setMessage(data);
+          setStatus("pairing");
+        });
+      }
+      webRTCAndSocket();
     },
 
     [socket]
