@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 const servers = {
   iceServers: [
+    { urls: "stun:stun1.1.google.com:19302" },
     {
-      urls: ["stun:stun1.1.google.com:19302", "stun:stun2.1.google.com:19302"],
+      urls: "turn:openrelay.metered.ca:80",
+      username: "openrelayproject",
+      credential: "openrelayproject",
     },
   ],
 };
@@ -46,6 +49,9 @@ function VideoRoom({ socket }) {
               socket.emit("candidate", JSON.stringify(e.candidate));
             }
           };
+          peer.oniceconnectionstatechange = () => {
+            console.log("ICE Connection State:", peer.iceConnectionState);
+          };
 
           const offer = await peer.createOffer();
           await peer.setLocalDescription(new RTCSessionDescription(offer));
@@ -67,6 +73,7 @@ function VideoRoom({ socket }) {
 
           socket.on("candidate-sent", async (data) => {
             if (peer) {
+              console.log("aman");
               peer.addIceCandidate(data);
             }
           });
